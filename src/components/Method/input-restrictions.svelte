@@ -7,3 +7,12 @@
 	class="input"
 	min="1"
 />
+<p>Inserte el numero de variables</p>
+<input
+	type="number"
+	name="txtvariables"
+	id="txtvariables"
+	placeholder="2"
+	class="input"
+	min="1"
+/>

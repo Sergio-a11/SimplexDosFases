@@ -15,11 +15,11 @@ export function createMatrix(restrictionsLines: number, variablesRows: number) {
       string +=
         `<td><input type="number" class="input" id="` + i + j + `"/>X${j + 1}`;
       if (j < variablesRows - 1) {
-        string += `+`
+        string += ` + `
       }
       string += ` </td>`
     }
-    string += `<td>${menu}</td><td><input type="number" class="input" id="` + i + variablesRows + `"/></td></tr>`;
+    string += `<td> ${menu} </td><td><input type="number" class="input" id="` + i + variablesRows + `"/></td></tr>`;
   }
   string += `</table>`;
 
