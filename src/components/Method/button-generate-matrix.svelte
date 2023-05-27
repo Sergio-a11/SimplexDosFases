@@ -27,7 +27,9 @@
 </script>
 
 <button
+	disabled
 	on:click={handleClick}
-	class="absolute px-1 py-1 ml-3 text-indigo-500 border-2 border-indigo-500 rounded-full"
+	id="botonGenerarMatriz"
+	class="absolute px-1 py-1 ml-3 text-indigo-500 border-2 border-indigo-500 rounded-full disabled:border-gray-500 disabled:text-gray-500"
 	>Generar Campos a llenar
 </button>

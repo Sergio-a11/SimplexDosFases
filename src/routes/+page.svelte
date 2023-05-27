@@ -3,23 +3,26 @@
 	import InputRestrictions from '../components/Method/input-restrictions.svelte';
 	import ButtonGenerateMatrix from '../components/Method/button-generate-matrix.svelte';
 	import { createMatrix } from '../services/matrix';
+	import { generarInputsZ } from '../services/Z_funtion';
+	import { leerInputsZ } from '../services/Z_funtion';
 
 	let restricciones: number = 0;
 	let variables: number = 0;
 
+	//lee las restricciones y crea la matriz
 	function handleRestriction(event: {
 		detail: { restrictions: any; variables: any };
 	}) {
 		restricciones = event.detail.restrictions ?? 2;
 		variables = event.detail.variables ?? 2;
 		createMatrix(restricciones, variables);
+		generarInputsZ(variables);
 		enable = true;
 	}
 
 	function GenerarGrafo() {
-		let zx1 = <HTMLInputElement>document.getElementById('zx1');
-		let zx2 = <HTMLInputElement>document.getElementById('zx2');
-		alert('Generar Grafo' + zx1.value + zx2.value);
+		leerInputsZ(variables);
+		//alert('Generar Grafo' + zx1.value + zx2.value);
 	}
 </script>
 
@@ -32,9 +35,10 @@
 	<option value="max">Maximizar</option>
 	<option value="min">Minimizar</option>
 </select>
-<p>Función:</p>
-<input type="number" class="input" id="zx1" />X1 +
-<input type="number" class="input" id="zx2" />X2
+<p>Función Objetivo:</p>
+<span>Z = </span>
+<div id="zFunction" />
+
 <p>Restricciones</p>
 <div id="matriz" />
 <p>x1,x2>=0</p>

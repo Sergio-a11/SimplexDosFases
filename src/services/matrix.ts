@@ -27,3 +27,12 @@ export function createMatrix(restrictionsLines: number, variablesRows: number) {
   matriz.innerHTML = string;
 
 }
+
+export function estadoBoton() {
+  let button = <HTMLButtonElement>document.getElementById('botonGenerarMatriz');
+  let restricciones = <HTMLInputElement>document.getElementById('txtRestriction');
+  let variables = <HTMLInputElement>document.getElementById('txtvariables');
+  if (restricciones.value.length > 0 && variables.value.length > 0) {
+    button.disabled = false;
+  }
+}

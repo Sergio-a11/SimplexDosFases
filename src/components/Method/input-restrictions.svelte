@@ -1,3 +1,10 @@
+<script>
+	import { estadoBoton } from '../../services/matrix';
+	function update() {
+		estadoBoton();
+	}
+</script>
+
 <p>Inserte el numero de restricciones</p>
 <input
 	type="number"
@@ -6,6 +13,7 @@
 	placeholder="2"
 	class="input"
 	min="1"
+	on:change={update}
 />
 <p>Inserte el numero de variables</p>
 <input
@@ -15,4 +23,5 @@
 	placeholder="2"
 	class="input"
 	min="1"
+	on:change={update}
 />
