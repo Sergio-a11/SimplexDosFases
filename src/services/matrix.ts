@@ -1,8 +1,8 @@
 
 let menu = `
   <select name="signo" id="signo">
-  <option value = "lq" > <= </option>
-  <option value = "gq" > >= </option>
+  <option value = "lt" > <= </option>
+  <option value = "gt" > >= </option>
   <option value = "eq" > = </option>
   </select>`
 
@@ -35,4 +35,8 @@ export function estadoBoton() {
   if (restricciones.value.length > 0 && variables.value.length > 0) {
     button.disabled = false;
   }
+}
+
+export function leerMatrix(restrictionsLines: number, variablesRows: number) {
+
 }

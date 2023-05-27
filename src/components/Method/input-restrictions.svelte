@@ -11,7 +11,7 @@
 	name="txtRestriction"
 	id="txtRestriction"
 	placeholder="2"
-	class="input"
+	class="input placeholder:text-gray-300"
 	min="1"
 	on:change={update}
 />
@@ -21,7 +21,7 @@
 	name="txtvariables"
 	id="txtvariables"
 	placeholder="2"
-	class="input"
+	class="input placeholder:text-gray-300"
 	min="1"
 	on:change={update}
 />

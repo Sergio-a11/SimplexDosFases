@@ -5,7 +5,9 @@
 	import { createMatrix } from '../services/matrix';
 	import { generarInputsZ } from '../services/Z_funtion';
 	import { leerInputsZ } from '../services/Z_funtion';
+	import { test } from '../services/obj_ecuacion';
 
+	test();
 	let restricciones: number = 0;
 	let variables: number = 0;
 
