@@ -19,6 +19,7 @@ export function generarInputsZ(values: number) {
 
 
 export function leerInputsZ(variables: number): Array<Number> {
+  //numero de X = variables
   if (variables > 0) {
     let values = [];
     for (let i = 0; i < variables; i++) {
@@ -26,7 +27,7 @@ export function leerInputsZ(variables: number): Array<Number> {
       values.push(Number.parseFloat(aux.value));
     }
     console.log(values);
-
+    return values;
     // let espacioHTMLfuncion = <HTMLElement>document.getElementById('zFunction');
     // espacioHTMLfuncion.innerHTML = Zfunction;
   }

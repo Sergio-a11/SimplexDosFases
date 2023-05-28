@@ -2,12 +2,10 @@
 	let enable = false; //activar boton de genrar calculo
 	import InputRestrictions from '../components/Method/input-restrictions.svelte';
 	import ButtonGenerateMatrix from '../components/Method/button-generate-matrix.svelte';
-	import { createMatrix } from '../services/matrix';
-	import { generarInputsZ } from '../services/Z_funtion';
-	import { leerInputsZ } from '../services/Z_funtion';
-	import { test } from '../services/obj_ecuacion';
+	import { createMatrix, leerMatrix } from '../services/matrix';
+	import { generarInputsZ, leerInputsZ } from '../services/Z_funtion';
+	import { contarR } from '../services/obj_ecuacion';
 
-	test();
 	let restricciones: number = 0;
 	let variables: number = 0;
 
@@ -23,8 +21,15 @@
 	}
 
 	function GenerarGrafo() {
-		leerInputsZ(variables);
-		//alert('Generar Grafo' + zx1.value + zx2.value);
+		let funcionZ = leerInputsZ(variables); //Array of numbers
+		let matrizInicial = leerMatrix(restricciones, variables); // Array of Ecuaciones Inciales
+		let numerosR = contarR(matrizInicial);
+		let auxSignoZ = <HTMLSelectElement>document.getElementById(`signoZ`);
+		localStorage.signoZ = auxSignoZ.value;
+		localStorage.funcionZ = JSON.stringify(funcionZ);
+		//localStorage.setItem('matrizInicial', JSON.stringify(matrizInicial));
+		localStorage.matrizInicial = JSON.stringify(matrizInicial);
+		localStorage.numeroR = numerosR;
 	}
 </script>
 
@@ -33,7 +38,7 @@
 <InputRestrictions />
 <ButtonGenerateMatrix on:generate={handleRestriction} />
 <p>¿Cuál es el objetivo de la función?</p>
-<select name="operation">
+<select name="operation" id="signoZ">
 	<option value="max">Maximizar</option>
 	<option value="min">Minimizar</option>
 </select>
@@ -47,11 +52,9 @@
 
 <!--default cero-->
 {#if enable === true}
-	<input
-		class="button"
-		type="submit"
-		name="Submit"
-		value="Continuar"
-		on:click={GenerarGrafo}
-	/>
+	<a href="/methodTwoPhasesSolution">
+		<button class="button" type="submit" name="Submit" on:click={GenerarGrafo}>
+			Continuar
+		</button>
+	</a>
 {/if}
