@@ -3,13 +3,13 @@ export enum Signo {
 }
 
 export type EcuacionInicial = {
-  valores: Array<Number>;
+  valores: Array<number>;
   signo: Signo;
   resultado: number;
 }
 
 export type EcuacionPrimal = {
-  valores: Array<Number>;
+  valores: Array<number>;
   resultado: number;
   variablesArtificiales: VariablesArtificiales;
 }
@@ -26,7 +26,8 @@ export type iteracion = {
 
 export type Fila = {
   valores: Array<Number>;
-  artificial: [number, string]
+  artificial: [number, string];
+  resultado: number
 }
 
 /* //testing
@@ -69,6 +70,22 @@ export function contarR(arr: Array<EcuacionInicial>): number {
   return cont;
 }
 
+export function contarS(arr: Array<EcuacionInicial>): number {
+  let cont = 0;
+  arr.forEach((e, i) => {
+    if (e.signo === Signo.MayorQue) { cont += 1; }
+  })
+  return cont;
+}
+
+export function contarH(arr: Array<EcuacionInicial>): number {
+  let cont = 0;
+  arr.forEach((e, i) => {
+    if (e.signo === Signo.MenorQue) { cont += 1; }
+  })
+  return cont;
+}
+
 export function IncialAprimal(arr: Array<EcuacionInicial>): Array<EcuacionPrimal> {
   const arrP: Array<EcuacionPrimal> = []
   arr.forEach((e, i) => {
@@ -105,32 +122,66 @@ const obj3_1: EcuacionPrimal = {
 
 
 //añadir params si es max o min y si el resulado es negativo donde todo pasa a ser *(-1)
-export function ecuacionPrimalAFila(ecuacion: EcuacionPrimal, rNumber: number = 2, signoZ: string = "min"): Fila {
-  let elementos: Array<Number> = []
-  elementos.push(...ecuacion.valores)
-  elementos.push(ecuacion.variablesArtificiales.S)
-  elementos.push(ecuacion.variablesArtificiales.R)
-  elementos.push(ecuacion.variablesArtificiales.H)
-  // for (let i = 0; i < rNumber; i++) {
-  //   let aux: Array<number> = []
-  //   aux.length = rNumber;
-  //   aux.fill(0)
-  //   aux[i] = 1;//valr de R
-  //   elementos.push(...aux);
-  //   aux[i] = 0;
-  //   //console.log(aux)
-  // }
+//si es la primera columnas las inicializa, si no va a gregando cada valor a cada fila
 
-  //let artificial = []
-  let fila: Fila = {
-    valores: elementos,
-    artificial: [0, ""]
+//ecuaionesPrimales = valores a agragar
+//filas = filas en proceso de construccion
+//n = numero de columnas o items por ecucion o fila
+export function ecuacionPrimalAFila(ecuacionesPrimales: Array<number>, filas: Array<Fila>, n: number) {
+  if (filas.length === 0) {
+    ecuacionesPrimales.forEach((e) => {
+      //creador de columnas si es h, r, s y tiene en cuanta en que posicion pone el valor segun el maximo ejm rnumber
+      filas.push({
+        valores: [e],
+        artificial: [0, ""],//aun no lo he puesto
+        resultado: 0,
+      })
+    })
+  }
+  else {
+    filas.forEach((e, i) => {
+      e.valores.push(ecuacionesPrimales[i]);
+    })
+  }
+  return filas;
+}
+
+
+//tener en cuneta max o min para voltear Rs y si el resultado es negativo voltear la ecucion
+//ecuaciones = todas las ecuaciones primales
+//numeroR = cuantas R hay
+//numeroS = cuantas S hay
+//numeroH = cuantas H hay
+//numeroX = cuantas X hay
+//lastR = indice donde agregar el valor para las R
+//lastS = indice donde agregar el valor para las R
+//lastH = indice donde agregar el valor para las R
+//signoZ = signo de la ecuaion para ver si es min o max (no en uso)
+export function generarColumnas(ecuaciones: Array<EcuacionPrimal>, numeroR: number = 2, lastR = 0, numeroS: number = 1, lastS: number = 0, numeroH: number = 1, lastH: number = 0, columnaActual: number = 0, numeroX: number = 2, signoZ: string = "min"): Array<number> {
+
+  //fila que se va agregando 
+  let arr: Array<number> = [];
+
+  arr.length = ecuaciones.length;
+  arr.fill(0);
+  //agrgar valores de X
+  if (columnaActual < numeroX) {
+    ecuaciones.forEach((e, i) => {
+      arr[i] = e.valores[columnaActual]
+    })
+  }
+  //poner S
+  if (columnaActual < (numeroS + numeroX) && columnaActual >= numeroX) {
+    arr[lastS] = -1
+  }
+  //poner R
+  if (columnaActual < numeroR + numeroS + numeroX && columnaActual >= numeroS + numeroX) {
+    arr[lastR] = 1
+  }
+  //poner H
+  if (columnaActual < numeroH + numeroR + numeroS + numeroX && columnaActual >= numeroS + numeroX + numeroR) {
+    arr[lastH] = 1
   }
 
-  if (ecuacion.variablesArtificiales.H === 1) { fila.artificial[0] = 0; fila.artificial[1] = "H" }
-  if (ecuacion.variablesArtificiales.R === 1) { fila.artificial[0] = ecuacion.variablesArtificiales.R; fila.artificial[1] = "R" }
-  if (ecuacion.variablesArtificiales.S === -1) { fila.artificial[0] = 0; fila.artificial[1] = "S" }
-
-
-  return fila
+  return arr;
 }

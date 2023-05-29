@@ -4,7 +4,7 @@
 	import ButtonGenerateMatrix from '../components/Method/button-generate-matrix.svelte';
 	import { createMatrix, leerMatrix } from '../services/matrix';
 	import { generarInputsZ, leerInputsZ } from '../services/Z_funtion';
-	import { contarR } from '../services/obj_ecuacion';
+	import { contarR, contarS, contarH } from '../services/obj_ecuacion';
 
 	let restricciones: number = 0;
 	let variables: number = 0;
@@ -23,13 +23,19 @@
 	function GenerarGrafo() {
 		let funcionZ = leerInputsZ(variables); //Array of numbers
 		let matrizInicial = leerMatrix(restricciones, variables); // Array of Ecuaciones Inciales
+
 		let numerosR = contarR(matrizInicial);
+		let numerosS = contarS(matrizInicial);
+		let numerosH = contarH(matrizInicial);
+
 		let auxSignoZ = <HTMLSelectElement>document.getElementById(`signoZ`);
 		localStorage.signoZ = auxSignoZ.value;
 		localStorage.funcionZ = JSON.stringify(funcionZ);
 		//localStorage.setItem('matrizInicial', JSON.stringify(matrizInicial));
 		localStorage.matrizInicial = JSON.stringify(matrizInicial);
 		localStorage.numeroR = numerosR;
+		localStorage.numeroS = numerosS;
+		localStorage.numeroH = numerosH;
 	}
 </script>
 
