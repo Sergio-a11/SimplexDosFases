@@ -1,3 +1,5 @@
+
+//Muestra la matriz a llenar 
 export function generarInputsZ(values: number) {
   if (values > 0) {
     let Zfunction: string = '';
@@ -14,10 +16,10 @@ export function generarInputsZ(values: number) {
 
   }
 
-
+return Zfunction 
 }
 
-
+//retoma las variables de la matriz
 export function leerInputsZ(variables: number): Array<Number> {
   //numero de X = variables
   if (variables > 0) {

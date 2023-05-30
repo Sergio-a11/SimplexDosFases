@@ -14,6 +14,7 @@ export function generarFilas() {
   let numerosH = (Number.isNaN(Number.parseInt(localStorage.numeroH))) ? 1 : Number.parseInt(localStorage.numeroH);
   let signoZ = localStorage.signoZ;
 
+  
   let numeroDeColumnas = numerosH + numerosS + numerosR + funcionZ.length;
 
   //matriz con los datos de que variables artificiales tiene cada ecuaion
