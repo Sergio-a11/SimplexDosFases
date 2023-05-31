@@ -1,7 +1,6 @@
 import {
-  generarFilas(),
+  generarFilas,
 } from '../services/filas';
-import type { signoZ } from '../services/obj_ecuacion';
 
 export enum Signo {
   MenorQue = "lt", MayorQue = "gt", Igual = "eq"
@@ -22,15 +21,16 @@ export type EcuacionPrimal = {
 type VariablesArtificiales = { S: number, H: number, R: number }
 
 export type Iteracion = {
-  ecuaciones: Array<Fila>;
-  columnaPivote: Array<Number>;
-  filaPivote: EcuacionPrimal;
-  ZjCj: Array<Number>;
-  bi: number;
+  ecuaciones: Array<Fila>;//matriz, bi, cx y xb
+  valoresCj: Array<number>
+  columnaPivote: Array<number>;
+  indexPivote: Array<number>
+  filaPivote: Array<number>;
+  ZjCj: Array<number>;
 }
 
 export type Fila = {
-  valores: Array<Number>;
+  valores: Array<number>;
   artificial: [number, string];
   resultado: number
 }
@@ -153,8 +153,47 @@ export function generarColumnas(ecuaciones: Array<EcuacionPrimal>, numeroR: numb
   return arr;
 }
 
-export function generarTabla(IteracionObj:Iteracion){
-  
+export function generarIteracion(ecuaciones: Array<Fila>, numeroX: number, numeroH: number, numeroR: number, numeroS: number, signoZ: string): Iteracion {
+
+  let valoresCj = generarValoresCj(numeroX, numeroH, numeroR, numeroS, signoZ);
+  let valoresZjCj = obtenerZjCj(ecuaciones, valoresCj);
+  let columnaPivote = elegirColumnaPivote(signoZ, valoresZjCj, ecuaciones);
+  let valoresBi: Array<number> = []
+  ecuaciones.forEach((e) => {
+    valoresBi.push(e.resultado);
+  })
+  let iteracion: Iteracion = {
+    ecuaciones,
+    valoresCj,
+    columnaPivote,
+    indexPivote: [],
+    filaPivote: elegirFilaPivote(valoresBi, columnaPivote, ecuaciones),
+    ZjCj: valoresZjCj
+  };
+
+  return iteracion;
+}
+
+function generarValoresCj(numeroX: number, numeroH: number, numeroR: number, numeroS: number, signoZ: string): Array<number> {
+  let valoresCj: Array<number> = [];
+  for (let i = 0; i < numeroX; i++) {
+    valoresCj.push(0);
+  }
+  for (let i = 0; i < numeroH; i++) {
+    valoresCj.push(0);
+  }
+  for (let i = 0; i < numeroR; i++) {
+    if (signoZ === "min") valoresCj.push(1);
+    if (signoZ === "max") valoresCj.push(-1);
+  }
+  for (let i = 0; i < numeroS; i++) {
+    valoresCj.push(0);
+  }
+  return valoresCj;
+}
+
+/* export function generarTabla(IteracionObj: Iteracion) {
+
   let iteraciones = 0;
   let solucionOptima = false;
 
@@ -167,146 +206,167 @@ export function generarTabla(IteracionObj:Iteracion){
     console.log(`Variable de salida: ${variableSalida}`);
 
     Iterar(Iteracion);
-  
+
 
     if (SolucionOptima() = true) {
       console.log("Se alcanzó la solución óptima.");
     }
 
     iteraciones++;
-}
-}
+  }
+} */
 
 
-function elegircolumnapivote() {
-  // Lógica para seleccionar la variable de entrada
-  // La columna con el coeficiente más negativo en la fila de z
-  let variableEntrada = '';
+function elegirColumnaPivote(signoZ: string, ZjCj: Array<number>, ecuaciones: Array<Fila>): Array<number> {
+  let auxZjCj: Array<number> = [...ZjCj];
+  let ZjCjOrdenado = auxZjCj.sort();
+  let index = 0;
 
-  
-  const funcionZ = JSON.parse(localStorage.zjcj,iteracion:Iteracion.ecuacion); // Obtener la función objetivo
-  let coeficienteMasNegativo = Infinity;
-
-  for (let i = 0; i < funcionZ.length; i++) {
-    if (funcionZ[i] < coeficienteMasNegativo) { //necesito zj-cj
-      coeficienteMasNegativo = funcionZ[i];
-      variableEntrada = `x${i + 1}`; // Nombre de la variable de entrada
-    }
+  if (signoZ === "min") {
+    index = ZjCj.indexOf(ZjCjOrdenado[ZjCj.length - 1])
+  }
+  else {
+    index = ZjCj.indexOf(ZjCjOrdenado[0])
   }
 
-  return variableEntrada;
+  let columnaPivote: Array<number> = []
+
+  ecuaciones.forEach((e) => {
+    columnaPivote.push(e.valores[index])
+  })
+
+  return columnaPivote;
 }
 
 
 
-function elegirfilapivote(variableEntrada) {
+function elegirFilaPivote(resultadosBi: Array<number>, columnaPivote: Array<number>, ecuaciones: Array<Fila>): Array<number> {
+  let arrValoresBiDivididoColumnaPivote: Array<number> = []
+  for (var i = 0; i < resultadosBi.length; i++) {
+    arrValoresBiDivididoColumnaPivote.push(resultadosBi[i] / columnaPivote[i]);
+  }
+  let aux: Array<number> = arrValoresBiDivididoColumnaPivote;
+  aux.sort();
+  let menorPositivo = aux.find(i => i >= 0) //menor positivo
+
+  let filaPivote = new Array<number>();
+
+  filaPivote.push(...ecuaciones[arrValoresBiDivididoColumnaPivote.indexOf(menorPositivo || 0)].valores)
+
+  return filaPivote;
+
   // Lógica para seleccionar la variable de salida
   // Fila con el menor cociente entre bi y el valor correspondiente en la columna de la variable de entrada
 
-const matrizOperable = 
-const columnaVariableEntrada = columnapivote;
+  /* const matrizOperable =
+  const columnaVariableEntrada = columnapivote;
 
-let menorCociente = Infinity;
+  let menorCociente = Infinity;
 
-matrizOperable.forEach((fila) => {
-  
-  if (fila[columnaVariableEntrada] !== 0) {
-    const cociente = fila.resultado / fila[columnaVariableEntrada];
-    if (cociente < menorCociente) {
-      menorCociente = cociente;
-      filapivote = fila[i];
+  matrizOperable.forEach((fila) => {
+
+    if (fila[columnaVariableEntrada] !== 0) {
+      const cociente = fila.resultado / fila[columnaVariableEntrada];
+      if (cociente < menorCociente) {
+        menorCociente = cociente;
+        filapivote = fila[i];
+      }
     }
   }
-}
-)
-return filapivote
+  ) */
+
+  //return filapivote
 };
 
 
-function Iterar(Iteracion:Iteracion.columnaPivote, Iteracion:Iteracion.filaPivote) {
+/* function Iterar(Iteracion: Iteracion.columnaPivote, Iteracion: Iteracion.filaPivote) {
 
   const matrizOperable = /* Obtener la matriz operable */;
-  const variables = /* Obtener la lista de variables */;
-  const indicefila = variables.indexOf(filaPivote);
-  const indicecolumna = variables.indexOf(columnaPivote);
+  /*const variables = /* Obtener la lista de variables */;
+/*const indicefila = variables.indexOf(filaPivote);
+const indicecolumna = variables.indexOf(columnaPivote);
 
-  // Paso 2: Dividir la fila pivote por el elemento pivote
-  const filaPivote = matrizOperable[indicefila];
-  const elementoPivote = filaPivote[indicecolumna];
+// Paso 2: Dividir la fila pivote por el elemento pivote
+const filaPivote = matrizOperable[indicefila];
+const elementoPivote = filaPivote[indicecolumna];
 
-  for (let i = 0; i < filaPivote.length; i++) {
-    filaPivote[i] /= elementoPivote;
-  }
+for (let i = 0; i < filaPivote.length; i++) {
+  filaPivote[i] /= elementoPivote;
+}
 
-  // Paso 3: Actualizar las demás filas 
-  for (let i = 0; i < matrizOperable.length; i++) {
-    if (i !== indicefila) {
-      const filaActual = matrizOperable[i];
-      const fa = filaActual[indicecolumna];
+// Paso 3: Actualizar las demás filas 
+for (let i = 0; i < matrizOperable.length; i++) {
+  if (i !== indicefila) {
+    const filaActual = matrizOperable[i];
+    const fa = filaActual[indicecolumna];
 
-      for (let j = 0; j < filaActual.length; j++) {
-        filaActual[j] -= fa * filaPivote[j];
-      }
+    for (let j = 0; j < filaActual.length; j++) {
+      filaActual[j] -= fa * filaPivote[j];
     }
   }
+}
 
-  // Actualizar la lista de variables y sus coeficientes
-  variables[indicefila] = Iteracion.columnapivote;
+// Actualizar la lista de variables y sus coeficientes
+variables[indicefila] = Iteracion.columnapivote;
 
-  for (let i = 0; i < matrizOperable.length; i++) {
-    if (i !== indicefila) {
-      matrizOperable[i][indicecolumna] = 0;
-    }
+for (let i = 0; i < matrizOperable.length; i++) {
+  if (i !== indicefila) {
+    matrizOperable[i][indicecolumna] = 0;
   }
-
-  
-  return matrizOperable;
 }
 
 
+return matrizOperable;
+}
+*/
 
-function obtenerZjCj(matrizOperable: Array<Array<number>>, Iteracion: Iteracion) {
+//#TODO testear
+function obtenerZjCj(matrizOperable: Array<Fila>, valoresCj: Array<number>) {
   const zjCj = [];
-
-  for (let j = 0; j < Iteracion.length; j++) {
+  //hastas numero de columnas
+  for (let i = 0; i < matrizOperable[0].valores.length; i++) {
     let suma = 0;
+    //hasta numero de filas
+    for (let j = 0; j < matrizOperable.length; j++) {
+      console.log(j);
 
-    for (let i = 0; i < matrizOperable.length; i++) {
-      suma += matrizOperable[i][j] * Iteración[i];
+      console.log(matrizOperable[j].valores[i]);
+      console.log(matrizOperable[j].artificial[0]);
+      console.log(valoresCj[i]);
+
+      suma += (matrizOperable[j].valores[i] * matrizOperable[j].artificial[0]);
+      console.log(suma);
+
     }
+    let auxSuma = suma - valoresCj[i]
+    console.log(auxSuma);
 
-    zjCj.push(suma - Iteracion[j]);
+    zjCj.push(auxSuma);
   }
-
   return zjCj;
 }
 
-SolucionOptima(zjCj,generarFilas)
+/*
+SolucionOptima(zjCj, generarFilas)
 {
-  
-    const operation = document.getElementById("signoZ").value;
 
-    for(let i = 0; i < zjCj.length;)
+  const operation = document.getElementById("signoZ").value;
 
-    {
-      if(operation == "min")
-      {
-            if(zjCj[i] <= 0)
-            {
-              SolucionOptima = True
-            }
-            else{
-              SolucionOptima = False
-            }
-      }
-
-      else
-    {
-      if(zjCj[i] > 0)
-      {
+  for (let i = 0; i < zjCj.length;) {
+    if (operation == "min") {
+      if (zjCj[i] <= 0) {
         SolucionOptima = True
       }
-      else{
+      else {
+        SolucionOptima = False
+      }
+    }
+
+    else {
+      if (zjCj[i] > 0) {
+        SolucionOptima = True
+      }
+      else {
         SolucionOptima = False
       }
 
@@ -314,9 +374,8 @@ SolucionOptima(zjCj,generarFilas)
   }
   return SolucionOptima
 
-    }
-      
-  
-  
-  
-  
+}
+
+*/
+
+

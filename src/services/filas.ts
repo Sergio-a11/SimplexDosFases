@@ -5,7 +5,7 @@ import {
 } from '../services/obj_ecuacion';
 import type { Fila } from '../services/obj_ecuacion';
 
-export function generarFilas() {
+export function generarFilas(): Array<Fila> {
 
   let funcionZ = JSON.parse(localStorage.funcionZ); //Array of numbers
   let matrizInicial = JSON.parse(localStorage.matrizInicial); // Array of Ecuaciones Inciales
@@ -14,7 +14,7 @@ export function generarFilas() {
   let numerosH = (Number.isNaN(Number.parseInt(localStorage.numeroH))) ? 1 : Number.parseInt(localStorage.numeroH);
   let signoZ = localStorage.signoZ;
 
-  
+
   let numeroDeColumnas = numerosH + numerosS + numerosR + funcionZ.length;
 
   //matriz con los datos de que variables artificiales tiene cada ecuaion
@@ -55,6 +55,9 @@ export function generarFilas() {
       // el contador va diciendole a cual buscar el indice de la ecuaion y hay se manda poner la R
       lastR = matrizPrimal.indexOf(arrAux[contR]);
       contR += 1;
+      //asignar valores de variables artificiales
+      (signoZ === "min") ? matrizOperable[lastR].artificial[0] = 1 : matrizOperable[lastR].artificial[0] = -1
+      matrizOperable[lastR].artificial[1] = `R${contR}`
     }
     //H
     if (i < (numerosH + numerosR + numerosS + funcionZ.length) && i >= (numerosS + funcionZ.length + numerosR)) {
@@ -64,6 +67,9 @@ export function generarFilas() {
       )
       lastH = matrizPrimal.indexOf(arrAux[contH]);
       contH += 1;
+      //asignar valores de variables artificiales
+      matrizOperable[lastH].artificial[0] = 0;
+      matrizOperable[lastH].artificial[1] = `H${contH}`
     }
     //se van agregando las filas
     matrizOperable = ecuacionPrimalAFila(
@@ -90,5 +96,6 @@ export function generarFilas() {
   })
 
   console.log(matrizOperable);
+  return matrizOperable;
 }
 

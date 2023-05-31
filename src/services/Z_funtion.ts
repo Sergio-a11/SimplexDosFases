@@ -1,5 +1,5 @@
 
-//Muestra la matriz a llenar 
+//genera los input para la fucnion Z
 export function generarInputsZ(values: number) {
   if (values > 0) {
     let Zfunction: string = '';
@@ -13,10 +13,7 @@ export function generarInputsZ(values: number) {
 
     let espacioHTMLfuncion = <HTMLElement>document.getElementById('zFunction');
     espacioHTMLfuncion.innerHTML = Zfunction;
-
   }
-
-return Zfunction 
 }
 
 //retoma las variables de la matriz
