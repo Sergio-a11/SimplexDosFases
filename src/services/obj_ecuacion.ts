@@ -179,7 +179,7 @@ export function generarIteracion(ecuaciones: Array<Fila>, numeroX: number, numer
     ecuaciones,
     valoresCj,
     columnaPivote,
-    indexPivote: [ecuaciones.findIndex(filaPivote => filaPivote), columnaPivoteIndice(signoZ, valoresZjCj, ecuaciones)],//fila columna
+    indexPivote: [filaPivoteIndice(valoresBi, columnaPivote, ecuaciones), columnaPivoteIndice(signoZ, valoresZjCj, ecuaciones)],//fila columna
     filaPivote,
     ZjCj: valoresZjCj,
     variablesArtificialesTexto: generarTextoVariablesArtificiales(numeroX, numeroH, numeroR, numeroS)
@@ -289,7 +289,20 @@ function elegirFilaPivote(resultadosBi: Array<number>, columnaPivote: Array<numb
 
 };
 
+function filaPivoteIndice(resultadosBi: Array<number>, columnaPivote: Array<number>, ecuaciones: Array<Fila>): number {
+  let arrValoresBiDivididoColumnaPivote: Array<number> = []
+  for (var i = 0; i < resultadosBi.length; i++) {
+    arrValoresBiDivididoColumnaPivote.push(Number.parseFloat((resultadosBi[i] / columnaPivote[i]).toFixed(2)));
+  }
+  let aux: Array<number> = [];
+  aux.push(...arrValoresBiDivididoColumnaPivote);
+  aux.sort();
 
+  let menorPositivo = aux.find(i => i >= 0) //menor positivo
+
+  return arrValoresBiDivididoColumnaPivote.indexOf(menorPositivo || 0)
+
+};
 
 //#TODO testear
 function obtenerZjCj(matrizOperable: Array<Fila>, valoresCj: Array<number>) {
