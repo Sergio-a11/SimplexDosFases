@@ -9,6 +9,8 @@ export function generarFilas(): Array<Fila> {
 
   let funcionZ = JSON.parse(localStorage.funcionZ); //Array of numbers
   let matrizInicial = JSON.parse(localStorage.matrizInicial); // Array of Ecuaciones Inciales
+  console.log(matrizInicial);
+
   let numerosR = (Number.isNaN(Number.parseInt(localStorage.numeroR))) ? 2 : Number.parseInt(localStorage.numeroR);
   let numerosS = (Number.isNaN(Number.parseInt(localStorage.numeroS))) ? 1 : Number.parseInt(localStorage.numeroS);
   let numerosH = (Number.isNaN(Number.parseInt(localStorage.numeroH))) ? 1 : Number.parseInt(localStorage.numeroH);
