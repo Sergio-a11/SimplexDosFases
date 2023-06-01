@@ -30,7 +30,8 @@ export type Iteracion = {
   indexPivote: Array<number>,
   filaPivote: Array<number>,
   ZjCj: Array<number>,
-  variablesArtificialesTexto: Array<string>
+  variablesArtificialesTexto: Array<string>,
+  Z: number
 }
 
 export type Fila = {
@@ -179,10 +180,11 @@ export function generarIteracion(ecuaciones: Array<Fila>, numeroX: number, numer
     ecuaciones,
     valoresCj,
     columnaPivote,
-    indexPivote: [filaPivoteIndice(valoresBi, columnaPivote, ecuaciones), columnaPivoteIndice(signoZ, valoresZjCj, ecuaciones)],//fila columna
+    indexPivote: [filaPivoteIndice(valoresBi, columnaPivote, ecuaciones), columnaPivoteIndice(signoZ, valoresZjCj, ecuaciones)],
     filaPivote,
     ZjCj: valoresZjCj,
-    variablesArtificialesTexto: generarTextoVariablesArtificiales(numeroX, numeroH, numeroR, numeroS)
+    variablesArtificialesTexto: generarTextoVariablesArtificiales(numeroX, numeroH, numeroR, numeroS),
+    Z: 0
   };
 
   return iteracion;
@@ -324,9 +326,7 @@ function obtenerZjCj(matrizOperable: Array<Fila>, valoresCj: Array<number>) {
 ////////////////////////////////////////////////////////////////
 //PASAR DE UNA ITERACION A OTRA
 
-//debe ser llamada y almacenado en un array de iteraciones
-export function iterar(iteracion: Iteracion) {
-  //quitar referencias
+function eliminarReferenciaIteracion(iteracion: Iteracion): Iteracion {
   let auxEcuaciones: Array<Fila> = []
 
   for (let i = 0; i < iteracion.ecuaciones.length; i++) {
@@ -353,6 +353,7 @@ export function iterar(iteracion: Iteracion) {
 
   //let nuevaIteracion: Iteracion = Object.assign({}, iteracion)
   //crar nueva iteracion sin referencia
+
   let nuevaIteracion: Iteracion = {
     ecuaciones: auxEcuaciones,
     valoresCj: auxValoresCj,
@@ -360,17 +361,25 @@ export function iterar(iteracion: Iteracion) {
     indexPivote: auxIndexPivote,
     filaPivote: auxFilaPivote,
     ZjCj: [],
-    variablesArtificialesTexto: iteracion.variablesArtificialesTexto
+    variablesArtificialesTexto: iteracion.variablesArtificialesTexto,
+    Z: 0
   }
-  //nuevaIteracion.ecuaciones = Array.from(iteracion.ecuaciones);
 
+  return nuevaIteracion;
+}
+
+//debe ser llamada y almacenado en un array de iteraciones
+//debe ser llamada y almacenado en un array de iteraciones
+export function iterar(iteracion: Iteracion) {
+  //quitar referencias
+  let nuevaIteracion = eliminarReferenciaIteracion(iteracion)
+
+  //nuevaIteracion.ecuaciones = Array.from(iteracion.ecuaciones);
   ///////dividir fila pivote
   //seleccionar fila a dividir, con map se opera toda la fila a la vez
   nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].valores = (iteracion.ecuaciones[iteracion.indexPivote[0]].valores.map((x) => (x / iteracion.filaPivote[iteracion.indexPivote[0]]).toFixed(2))).map(parseFloat);
   //dividir  bi o resultado
   nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].resultado = Number.parseFloat((iteracion.ecuaciones[iteracion.indexPivote[0]].resultado / iteracion.filaPivote[iteracion.indexPivote[0]]).toFixed(2))
-  //nuevaIteracion.filaPivote = fila por la que se va a operar
-  //nuevaIteracion.filaPivote = iteracion.ecuaciones[iteracion.indexPivote[0]].valores
 
   //cada ecuacion
   nuevaIteracion.ecuaciones.forEach((e, i) => {
@@ -381,108 +390,25 @@ export function iterar(iteracion: Iteracion) {
         console.log(e.valores[j]);
 
       }
-      e.resultado = ((nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].resultado) * ((iteracion.columnaPivote[i] * -1))) + (iteracion.ecuaciones[i].resultado);
+      e.resultado = Number.parseFloat((((nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].resultado) * ((iteracion.columnaPivote[i] * -1))) + (iteracion.ecuaciones[i].resultado)).toFixed());
     }
   })
-  console.log(nuevaIteracion);
   cambiarVariablesArtificiales(nuevaIteracion);
-  console.log(generarIteracion(nuevaIteracion.ecuaciones, 2, 1, 2, 1, "min"))
+
+  return nuevaIteracion; //falta calcular valores (pivotes) de la iteracion se hacen en el retorno
 }
 
-/*
-SolucionOptima(zjCj, generarFilas)
-{
+export function SolucionOptima(iteracioncita: Iteracion, signoZ: string): boolean {
+  let SolucionOp = false
+  const operation = signoZ; //pasar signoz
 
-  const operation = document.getElementById("signoZ").value;
+  if (operation == "min") {
 
-  for (let i = 0; i < zjCj.length;) {
-    if (operation == "min") {
-      if (zjCj[i] <= 0) {
-        SolucionOptima = True
-      }
-      else {
-        SolucionOptima = False
-      }
-    }
-
-    else {
-      if (zjCj[i] > 0) {
-        SolucionOptima = True
-      }
-      else {
-        SolucionOptima = False
-      }
-
-    }
+    SolucionOp = iteracioncita.ZjCj.every(i => i <= 0)
   }
-  return SolucionOptima
+  else {
+    SolucionOp = iteracioncita.ZjCj.every(i => i >= 0)
 
-}
-
-*/
-
-/* function Iterar(Iteracion: Iteracion.columnaPivote, Iteracion: Iteracion.filaPivote) {
-
-  const matrizOperable = /* Obtener la matriz operable */;
-  /*const variables = /* Obtener la lista de variables */;
-/*const indicefila = variables.indexOf(filaPivote);
-const indicecolumna = variables.indexOf(columnaPivote);
-
-// Paso 2: Dividir la fila pivote por el elemento pivote
-const filaPivote = matrizOperable[indicefila];
-const elementoPivote = filaPivote[indicecolumna];
-
-for (let i = 0; i < filaPivote.length; i++) {
-  filaPivote[i] /= elementoPivote;
-}
-
-// Paso 3: Actualizar las demás filas 
-for (let i = 0; i < matrizOperable.length; i++) {
-  if (i !== indicefila) {
-    const filaActual = matrizOperable[i];
-    const fa = filaActual[indicecolumna];
-
-    for (let j = 0; j < filaActual.length; j++) {
-      filaActual[j] -= fa * filaPivote[j];
-    }
   }
+  return SolucionOp
 }
-
-// Actualizar la lista de variables y sus coeficientes
-variables[indicefila] = Iteracion.columnapivote;
-
-for (let i = 0; i < matrizOperable.length; i++) {
-  if (i !== indicefila) {
-    matrizOperable[i][indicecolumna] = 0;
-  }
-}
-
-
-return matrizOperable;
-}
-*/
-
-
-/* export function generarTabla(IteracionObj: Iteracion) {
-
-  let iteraciones = 0;
-  let solucionOptima = false;
-
-  while (!solucionOptima) {
-    console.log(`Iteración ${iteraciones}`);
-
-    const variableEntrada = elegircolumnapivote();
-    const variableSalida = elegirfilapivote();
-    console.log(`Variable de entrada: ${variableEntrada}`);
-    console.log(`Variable de salida: ${variableSalida}`);
-
-    Iterar(Iteracion);
-
-
-    if (SolucionOptima() = true) {
-      console.log("Se alcanzó la solución óptima.");
-    }
-
-    iteraciones++;
-  }
-} */
