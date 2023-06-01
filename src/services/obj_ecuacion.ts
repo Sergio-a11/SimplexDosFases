@@ -173,6 +173,7 @@ export function generarIteracion(ecuaciones: Array<Fila>, numeroX: number, numer
   ecuaciones.forEach((e) => {
     valoresBi.push(e.resultado);
   })
+  console.log(ecuaciones);
   let filaPivote = elegirFilaPivote(valoresBi, columnaPivote, ecuaciones);
 
   //crear iteracion
@@ -225,14 +226,14 @@ function generarValoresCj(numeroX: number, numeroH: number, numeroR: number, num
       valoresCj.push(0);
     }
   }
-  for (let i = 0; i < numeroH; i++) {
+  for (let i = 0; i < numeroS; i++) {
     valoresCj.push(0);
   }
   for (let i = 0; i < numeroR; i++) {
     if (signoZ === "min") valoresCj.push(1);
     if (signoZ === "max") valoresCj.push(-1);
   }
-  for (let i = 0; i < numeroS; i++) {
+  for (let i = 0; i < numeroH; i++) {
     valoresCj.push(0);
   }
   return valoresCj;
@@ -291,7 +292,6 @@ function elegirFilaPivote(resultadosBi: Array<number>, columnaPivote: Array<numb
   let menorPositivo = aux.find(i => i >= 0) //menor positivo
 
   let filaPivote = new Array<number>();
-
   filaPivote.push(...ecuaciones[arrValoresBiDivididoColumnaPivote.indexOf(menorPositivo || 0)].valores)
 
   return filaPivote;

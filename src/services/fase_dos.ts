@@ -20,7 +20,12 @@ export function faseDos(iteracion: Iteracion): Iteracion {
   let funcionZ: Array<number> = JSON.parse(localStorage.funcionZ) ?? [];
 
   funcionZ.forEach((e, i) => {
-    primeraIteracionFase2.ecuaciones[i].artificial[0] = e
+    if (!primeraIteracionFase2.ecuaciones[i].artificial[1].includes("X")) {
+      primeraIteracionFase2.ecuaciones[i].artificial[0] = 0
+    }
+    else {
+      primeraIteracionFase2.ecuaciones[i].artificial[0] = e
+    }
   })
   let arr: Array<number> = [];
 
