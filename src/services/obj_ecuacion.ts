@@ -218,7 +218,12 @@ function cambiarVariablesArtificiales(iteracion: Iteracion) {
 function generarValoresCj(numeroX: number, numeroH: number, numeroR: number, numeroS: number, signoZ: string): Array<number> {
   let valoresCj: Array<number> = [];
   for (let i = 0; i < numeroX; i++) {
-    valoresCj.push(0);
+    if (numeroR === 0) {
+      let funcionZ: Array<number> = JSON.parse(localStorage.funcionZ) ?? [];
+      valoresCj.push(funcionZ[i]);
+    } else {
+      valoresCj.push(0);
+    }
   }
   for (let i = 0; i < numeroH; i++) {
     valoresCj.push(0);
@@ -331,13 +336,14 @@ function obtenerZ(matrizOperable: Array<Fila>) {
   for (let j = 0; j < matrizOperable.length; j++) {
     suma += (matrizOperable[j].resultado * matrizOperable[j].artificial[0]);
   }
+  suma.toFixed(2);
   return suma;
 }
 
 ////////////////////////////////////////////////////////////////
 //PASAR DE UNA ITERACION A OTRA
 
-function eliminarReferenciaIteracion(iteracion: Iteracion): Iteracion {
+export function eliminarReferenciaIteracion(iteracion: Iteracion): Iteracion {
   let auxEcuaciones: Array<Fila> = []
 
   for (let i = 0; i < iteracion.ecuaciones.length; i++) {
@@ -390,6 +396,7 @@ export function iterar(iteracion: Iteracion) {
   nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].valores = (iteracion.ecuaciones[iteracion.indexPivote[0]].valores.map((x) => (x / iteracion.filaPivote[iteracion.indexPivote[0]]).toFixed(2))).map(parseFloat);
   //dividir  bi o resultado
   nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].resultado = Number.parseFloat((iteracion.ecuaciones[iteracion.indexPivote[0]].resultado / iteracion.filaPivote[iteracion.indexPivote[0]]).toFixed(2))
+  //console.log(iteracion.ecuaciones[iteracion.indexPivote[0]].resultado);
 
   //cada ecuacion
   nuevaIteracion.ecuaciones.forEach((e, i) => {
@@ -400,7 +407,7 @@ export function iterar(iteracion: Iteracion) {
         //console.log(e.valores[j]);
 
       }
-      e.resultado = Number.parseFloat((((nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].resultado) * ((iteracion.columnaPivote[i] * -1))) + (iteracion.ecuaciones[i].resultado)).toFixed());
+      e.resultado = Number.parseFloat((((nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].resultado) * ((iteracion.columnaPivote[i] * -1))) + (iteracion.ecuaciones[i].resultado)).toFixed(2));
     }
   })
   cambiarVariablesArtificiales(nuevaIteracion);

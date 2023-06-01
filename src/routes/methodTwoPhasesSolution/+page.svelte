@@ -6,6 +6,7 @@
 		SolucionOptima
 	} from '../../services/obj_ecuacion';
 	import type { Iteracion } from '../../services/obj_ecuacion';
+	import { faseDos } from '../../services/fase_dos';
 
 	import { generarTablaFase1 } from '../../services/tabla_fase_1';
 	//primera iteracion
@@ -64,7 +65,42 @@
 		boton2.disabled = false;
 	}
 	function GenerarFase2() {
-		generarTablaFase1(iteracionesFase1, 'espacioTablaFase2');
+		let iteracionesFase2: Array<Iteracion> = []; //array
+		let primeraIteracionFase2 = faseDos(
+			iteracionesFase1[iteracionesFase1.length - 1]
+		); //maqueta primera iteracion;//sin referencia
+		primeraIteracionFase2 = generarIteracion(
+			primeraIteracionFase2.ecuaciones,
+			funcionZ.length,
+			numerosH,
+			0,
+			numerosS,
+			signoZ
+		);
+		iteracionesFase2.push(primeraIteracionFase2);
+		let iteracionActual = primeraIteracionFase2; //segunda iteracion medio vacia
+		let aux = 0; //pa que no se explote si falla la validacion
+		while (
+			SolucionOptima(primeraIteracionFase2, signoZ) === false &&
+			aux < 20
+		) {
+			iteracionActual = iterar(iteracionActual);
+			iteracionActual = generarIteracion(
+				iteracionActual.ecuaciones,
+				funcionZ.length,
+				numerosH,
+				0,
+				numerosS,
+				signoZ
+			);
+			iteracionesFase2.push(iteracionActual);
+			//console.log(iteracionActual);
+			if (SolucionOptima(iteracionActual, signoZ)) {
+				break;
+			}
+			aux++;
+		}
+		generarTablaFase1(iteracionesFase2, 'espacioTablaFase2');
 	}
 </script>
 
