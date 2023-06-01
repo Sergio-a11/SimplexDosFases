@@ -38,23 +38,37 @@
 		localStorage.numeroH = numerosH;
 	}
 </script>
+<div class="container">
+  <div class="titulo">
+    <h1 class="titulo-texto">Método De Dos Fases</h1>
+  </div>
 
-<h1>Metodo Grafico</h1>
-<small>maximo 2 variables</small>
-<InputRestrictions />
-<ButtonGenerateMatrix on:generate={handleRestriction} />
-<p>¿Cuál es el objetivo de la función?</p>
-<select name="operation" id="signoZ">
-	<option value="max">Maximizar</option>
-	<option value="min">Minimizar</option>
-</select>
-<p>Función Objetivo:</p>
-<span>Z = </span>
-<div id="zFunction" />
+  <div class="maximo-variables">
+  
+  </div>
 
-<p>Restricciones</p>
-<div id="matriz" />
-<p>x1,x2>=0</p>
+  <div class="input-restrictions">
+    <InputRestrictions class="input-restrictions-input" />
+	</div>
+	<div class="botonge">
+    <ButtonGenerateMatrix on:generate={handleRestriction} class="input-restrictions-button" />
+  </div>
+
+  <p class="funcion-titulo">¿Cuál es el objetivo de la función?</p>
+  <select name="operation" id="signoZ" class="funcion-select">
+    <option value="max">Maximizar</option>
+    <option value="min">Minimizar</option>
+  </select>
+
+  <p class="funcion-titulo">Función Objetivo:</p>
+  <span class="funcion-texto">Z = </span>
+  <div id="zFunction" class="funcion-input" />
+
+  <p class="restricciones-titulo">Restricciones</p>
+  <div id="matriz" class="restricciones-matriz" />
+
+  <p class="restricciones-texto">x1, x2 &gt;= 0</p>
+</div>
 
 <!--default cero-->
 {#if enable === true}

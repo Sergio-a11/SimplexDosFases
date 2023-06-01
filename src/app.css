@@ -11,4 +11,88 @@
   .input {
     @apply w-40 pt-1 pb-1 pl-3 text-lg font-normal text-indigo-700 placeholder-indigo-400 uppercase bg-transparent border-2 border-indigo-500 shadow-sm rounded-xl;
   }
+
+  .container {
+    @apply max-w-7xl  p-5
+   
+  }
+  
+  .titulo {
+    @apply  text-center mb-5 bg-gradient-to-r from-pink-600 to-blue-500 rounded-3xl
+
+  }
+  
+  .titulo-texto {
+    @apply  text-2xl font-bold text-gray-800;
+  }
+  
+  .maximo-variables {
+    @apply mb-1
+  }
+  
+  .texto-variable {
+    @apply  text-gray-800
+  }
+  
+  .input-restrictions {
+    @apply flex flex-col items-center mb-5
+
+    
+  }
+  
+  .input-restrictions-container {
+    @apply flex flex-col items-center
+  }
+  
+  .input-restrictions-input {
+    @apply w-48 p-3 mb-2
+    
+  }
+  
+  .input-restrictions-button {
+    @apply p-3
+  }
+  
+  .funcion-titulo {
+    @apply mt-3 font-bold 
+    
+  }
+  
+  .funcion-select {
+    @apply w-full p-3 border-2 border-indigo-500 rounded-xl
+   
+    
+  }
+
+  .funcion-select-signo{
+
+    @apply w-full p-1 border-2 border-indigo-500 rounded-3xl bg-pink-600  text-gray-50
+
+  }
+  
+  .funcion-texto {
+    @apply font-bold
+   
+  }
+  
+  .funcion-input {
+    @apply w-full pt-5 pb-1 pl-3 text-lg font-normal text-indigo-700 placeholder-pink-600 uppercase bg-transparent border-2 border-pink-600 shadow-sm rounded-xl;
+  
+  }
+  
+  .restricciones-titulo {
+    @apply mt-3 font-bold 
+  }
+  
+  .restricciones-matriz {
+    @apply w-full pt-5 pb-1 pl-3 text-lg font-normal text-indigo-700 placeholder-pink-600 uppercase bg-transparent border-2 border-pink-600 shadow-sm rounded-xl;;
+  }
+  
+  .restricciones-texto {
+    color: #888;
+  }
+  .botonge{
+margin-bottom: 5rem;
+
+  }
 }
