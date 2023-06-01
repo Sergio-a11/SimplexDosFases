@@ -1,4 +1,46 @@
-import type { Iteracion } from '../services/obj_ecuacion';
+import type { EcuacionInicial, Iteracion } from '../services/obj_ecuacion';
+import { Signo } from '../services/obj_ecuacion';
+
+export function generarFuncionZyMatrizInicial() {
+  let matrizInicial: Array<EcuacionInicial> = JSON.parse(localStorage.matrizInicial);
+  let funcionZ: Array<number> = JSON.parse(localStorage.funcionZ);
+  let signoZ: string = localStorage.signoZ;
+  let div = `<p class="titulo">Funcion Z : ${signoZ}</p>`
+  for (let i = 0; i < funcionZ.length; i++) {
+    div += `<input type="number" class="input-after" disabled value="${funcionZ[i]}" /> X${i + 1}`;
+    if (i < funcionZ.length - 1) {
+      div += ` + `
+    }
+  }
+  div += `<p class="titulo">Estado Inicial</p>`;
+  div += `<table>`;
+  for (let i = 0; i < matrizInicial.length; i++) {
+    div += `<tr>`;
+    for (let j = 0; j < matrizInicial[0].valores.length; j++) {
+      div += `<td><input type="text" class="input-after" disabled value="${matrizInicial[i].valores[j]}"> X${j + 1}`;
+      if (j < matrizInicial[0].valores.length - 1) {
+        div += ` + `
+      }
+      div += `</td>`
+    }
+    div += `<td> ${retornarSigno(matrizInicial[i].signo)} </td><td><input type="text" class="input-after" disabled value="${matrizInicial[i].resultado}"/></td></tr>`;
+  }
+  div += `</table>`;
+
+  let espacioDiv = <HTMLElement>document.getElementById('ecuaciones');
+  espacioDiv.innerHTML = div;
+  console.log(div);
+
+
+}
+
+function retornarSigno(signo: Signo): string {
+  let x = ""
+  if (Signo.Igual === signo) x = "="
+  if (Signo.MenorQue === signo) x = "<="
+  if (Signo.MayorQue === signo) x = ">="
+  return x
+}
 
 export function generarTablaFase1(iteraciones: Array<Iteracion>, div: string) {
   //encabezado

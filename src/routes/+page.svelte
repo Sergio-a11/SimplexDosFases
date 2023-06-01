@@ -39,27 +39,39 @@
 	}
 </script>
 
-<h1 class="titulo">Metodo Grafico</h1>
-<InputRestrictions />
-<ButtonGenerateMatrix on:generate={handleRestriction} />
-<p class="titulo">¿Cuál es el objetivo de la función?</p>
-<select name="operation" id="signoZ" class="Deslizable">
-	<option value="max">Maximizar</option>
-	<option value="min">Minimizar</option>
-</select>
-<p class="titulo">Función Objetivo:</p>
-<span class="titulo">Z = </span>
-<div id="zFunction" />
+<div class="container">
+	<h1 class="tituloG">Metodo 2 Fases</h1>
+	<div class="input-restrictions">
+		<InputRestrictions />
+	</div>
+	<div class="botonge">
+		<ButtonGenerateMatrix on:generate={handleRestriction} />
+	</div>
 
-<p class="titulo">Restricciones</p>
-<div id="matriz" />
-<p>x1,x...>=0</p>
+	<p class="titulo">¿Cuál es el objetivo de la función?</p>
+	<select name="operation" id="signoZ" class="Deslizable">
+		<option value="max">Maximizar</option>
+		<option value="min">Minimizar</option>
+	</select>
+	<p class="titulo">Función Objetivo:</p>
+	<span class="titulo">Z = </span>
+	<div id="zFunction" />
 
-<!--default cero-->
-{#if enable === true}
-	<a href="/methodTwoPhasesSolution">
-		<button class="button" type="submit" name="Submit" on:click={GenerarGrafo}>
-			Continuar
-		</button>
-	</a>
-{/if}
+	<p class="titulo">Restricciones</p>
+	<div id="matriz" />
+	<p>x1,x...>=0</p>
+
+	<!--default cero-->
+	{#if enable === true}
+		<a href="/methodTwoPhasesSolution">
+			<button
+				class="button"
+				type="submit"
+				name="Submit"
+				on:click={GenerarGrafo}
+			>
+				Continuar
+			</button>
+		</a>
+	{/if}
+</div>

@@ -8,7 +8,10 @@
 	import type { Iteracion } from '../../services/obj_ecuacion';
 	import { faseDos } from '../../services/fase_dos';
 
-	import { generarTablaFase1 } from '../../services/tabla_fase_1';
+	import {
+		generarTablaFase1,
+		generarFuncionZyMatrizInicial
+	} from '../../services/tabla_fase_1';
 	//primera iteracion
 	let filas = generarFilas();
 	let numerosR = Number.isNaN(Number.parseInt(localStorage.numeroR))
@@ -60,6 +63,7 @@
 	console.log(iteracionesFase1);
 
 	function GenerarFase1() {
+		generarFuncionZyMatrizInicial();
 		generarTablaFase1(iteracionesFase1, 'espacioTablaFase1');
 		let boton2 = <HTMLButtonElement>document.getElementById(`botonfase2`);
 		boton2.disabled = false;
@@ -104,6 +108,8 @@
 		generarTablaFase1(iteracionesFase2, 'espacioTablaFase2');
 	}
 </script>
+
+<div id="ecuaciones" />
 
 <button class="button" type="submit" name="Submit" on:click={GenerarFase1}>
 	Ejecutar Fase 1

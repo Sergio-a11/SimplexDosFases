@@ -5,7 +5,7 @@
 	}
 </script>
 
-<p class="titulo">Inserte el numero de restricciones</p>
+<p class="restricciones-texto">Inserte el numero de restricciones</p>
 <input
 	type="number"
 	name="txtRestriction"
@@ -15,7 +15,7 @@
 	min="1"
 	on:change={update}
 />
-<p class="titulo">Inserte el numero de variables</p>
+<p class="restricciones-texto">Inserte el numero de variables</p>
 <input
 	type="number"
 	name="txtvariables"
