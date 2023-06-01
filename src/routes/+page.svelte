@@ -39,22 +39,21 @@
 	}
 </script>
 
-<h1>Metodo Grafico</h1>
-<small>maximo 2 variables</small>
+<h1 class="tituloG">Metodo de dos fases</h1>
 <InputRestrictions />
 <ButtonGenerateMatrix on:generate={handleRestriction} />
-<p>¿Cuál es el objetivo de la función?</p>
-<select name="operation" id="signoZ">
+<p class="titulo">¿Cuál es el objetivo de la función?</p>
+<select name="operation" id="signoZ" class="Deslizable">
 	<option value="max">Maximizar</option>
 	<option value="min">Minimizar</option>
 </select>
-<p>Función Objetivo:</p>
-<span>Z = </span>
+<p class="titulo">Función Objetivo:</p>
+<p class="titulo">Z =</p>
 <div id="zFunction" />
 
-<p>Restricciones</p>
+<p class="titulo">Restricciones</p>
 <div id="matriz" />
-<p>x1,x2>=0</p>
+<p class="titulo">x1,x2>=0</p>
 
 <!--default cero-->
 {#if enable === true}

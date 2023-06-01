@@ -5,8 +5,8 @@ import { Signo } from "./obj_ecuacion";
 
 function menuSigno(i: number = 0): string {
   return `
-  <select name="signo" id="signo${i}">
-  <option value = "lt" > <= </option>
+  <select class="signos" name="signo" id="signo${i}">
+  <option value = "lt" selected > <= </option>
   <option value = "gt" > >= </option>
   <option value = "eq" > = </option>
   </select>`;
