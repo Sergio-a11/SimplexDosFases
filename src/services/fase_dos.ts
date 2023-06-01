@@ -2,12 +2,14 @@ import type { Iteracion } from '../services/obj_ecuacion';
 import { eliminarReferenciaIteracion } from '../services/obj_ecuacion';
 
 
-export function faseDos(iteracion: Iteracion): Iteracion {
-
-  let primeraIteracionFase2 = eliminarReferenciaIteracion(iteracion)
+export function faseDos(iteracion: Iteracion, signoZ: string): Iteracion {
 
   let numerosR = Number.isNaN(Number.parseInt(localStorage.numeroR)) ? 0 : Number.parseInt(localStorage.numeroR);
-  let indexR = primeraIteracionFase2.valoresCj.findIndex(a => a === 1)
+  console.log(iteracion);
+  let indexR = (signoZ === "min") ? iteracion.valoresCj.findIndex(a => a === 1) : iteracion.valoresCj.findIndex(a => a === -1)
+  let primeraIteracionFase2 = eliminarReferenciaIteracion(iteracion)
+
+  console.log(indexR);
   primeraIteracionFase2.ZjCj.push(...iteracion.ZjCj);
   primeraIteracionFase2.ZjCj.splice(indexR, numerosR);
   primeraIteracionFase2.variablesArtificialesTexto.splice(indexR, numerosR);
@@ -29,8 +31,10 @@ export function faseDos(iteracion: Iteracion): Iteracion {
   })
   let arr: Array<number> = [];
 
-  arr.length = iteracion.ZjCj.length;
+  arr.length = primeraIteracionFase2.ZjCj.length;
   arr.fill(0);
+  console.log(arr.length);
+
   //agrgar valores de X
 
   funcionZ.forEach((e, i) => {

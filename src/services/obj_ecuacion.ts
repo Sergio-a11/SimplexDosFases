@@ -187,6 +187,7 @@ export function generarIteracion(ecuaciones: Array<Fila>, numeroX: number, numer
     variablesArtificialesTexto: generarTextoVariablesArtificiales(numeroX, numeroH, numeroR, numeroS),
     Z: obtenerZ(ecuaciones)
   };
+  console.log(iteracion);
 
   return iteracion;
 }
@@ -236,6 +237,8 @@ function generarValoresCj(numeroX: number, numeroH: number, numeroR: number, num
   for (let i = 0; i < numeroH; i++) {
     valoresCj.push(0);
   }
+  console.log(valoresCj);
+
   return valoresCj;
 }
 
@@ -365,6 +368,8 @@ export function eliminarReferenciaIteracion(iteracion: Iteracion): Iteracion {
   auxFilaPivote.push(...iteracion.filaPivote);
   let auxValoresCj = [];
   auxValoresCj.push(...iteracion.valoresCj);
+  console.log(auxValoresCj);
+
   let auxIndexPivote = [];
   auxIndexPivote.push(...iteracion.indexPivote)
 

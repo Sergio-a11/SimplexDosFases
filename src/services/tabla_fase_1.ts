@@ -11,7 +11,7 @@ export function generarTablaFase1(iteraciones: Array<Iteracion>, div: string) {
   iteraciones[0].valoresCj.forEach((cj) => {
     tabla += `<th class="valores-cj">${cj}</th>`
   })
-  tabla += `<th rowspan="2" class="xb" >xb</th><th rowspan="2" class="bi">bi</th></tr><tr>`;
+  tabla += `<th rowspan="2" class="xb">xb</th><th rowspan="2" class="bi">bi</th></tr><tr>`;
   tabla += `<th class="cx">CX</th>`
   iteraciones[0].variablesArtificialesTexto.forEach((e) => {
     tabla += `<td class="valores-cj">${e}</td>`
@@ -26,7 +26,7 @@ export function generarTablaFase1(iteraciones: Array<Iteracion>, div: string) {
       tabla += `<tr><td class="valor-var-artificial" >${iteraciones[a].ecuaciones[b].artificial[0]}</td>`;
       //cada columna
       for (var i = 0; i < iteraciones[0].valoresCj.length; i++) {
-        tabla += `<td class="celda">${iteraciones[a].ecuaciones[b].valores[i]}</td>`;
+        tabla += `<td class="celda ${iteraciones[a].indexPivote[0] === b && a < iteraciones.length - 1 ? "pivote" : ""} ${iteraciones[a].indexPivote[1] === i && a < iteraciones.length - 1 ? "pivote" : ""}">${iteraciones[a].ecuaciones[b].valores[i]}</td>`;
       }
       tabla += `<td class="letra-var-artificial">${iteraciones[a].ecuaciones[b].artificial[1]}</td>`;
       tabla += `<td class="valor-bi">${iteraciones[a].ecuaciones[b].resultado}</td></tr>`;

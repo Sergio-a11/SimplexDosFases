@@ -67,7 +67,8 @@
 	function GenerarFase2() {
 		let iteracionesFase2: Array<Iteracion> = []; //array
 		let primeraIteracionFase2 = faseDos(
-			iteracionesFase1[iteracionesFase1.length - 1]
+			iteracionesFase1[iteracionesFase1.length - 1],
+			signoZ
 		); //maqueta primera iteracion;//sin referencia
 		primeraIteracionFase2 = generarIteracion(
 			primeraIteracionFase2.ecuaciones,
