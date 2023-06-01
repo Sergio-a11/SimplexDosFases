@@ -364,7 +364,6 @@ function eliminarReferenciaIteracion(iteracion: Iteracion): Iteracion {
 
   //let nuevaIteracion: Iteracion = Object.assign({}, iteracion)
   //crar nueva iteracion sin referencia
-
   let nuevaIteracion: Iteracion = {
     ecuaciones: auxEcuaciones,
     valoresCj: auxValoresCj,
