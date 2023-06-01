@@ -153,7 +153,8 @@ export function generarColumnas(ecuaciones: Array<EcuacionPrimal>, numeroR: numb
     arr[lastR] = 1
   }
   //poner H
-  if (columnaActual < numeroH + numeroR + numeroS + numeroX && columnaActual >= numeroS + numeroX + numeroR) {
+  if (columnaActual < numeroH + numeroR + numeroS + numeroX && columnaActual >= numeroS + numeroX + numeroR) 
+  {
     arr[lastH] = 1
   }
 
@@ -380,16 +381,11 @@ export function iterar(iteracion: Iteracion) {
   console.log(generarIteracion(nuevaIteracion.ecuaciones, 2, 1, 2, 1, "min"))
 
 
-  if(SolucionOptima())
-  {
-  GenerarTablaFaseDos(nuevaIteracion);
-  ImprimirFaseUnoFront();
 
-  }
 }
 
 
-function SolucionOptima(iteracioncita:Iteracion, signoZ: string):boolean
+export function SolucionOptima(iteracioncita:Iteracion, signoZ: string):boolean
 {
   let SolucionOp = false
   const operation = signoZ; //pasar signoz
