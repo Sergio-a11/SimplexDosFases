@@ -1,6 +1,6 @@
 import type { Iteracion } from '../services/obj_ecuacion';
 
-export function generarTablaFase1(iteraciones: Array<Iteracion>) {
+export function generarTablaFase1(iteraciones: Array<Iteracion>, div: string) {
   //encabezado
   let tabla = ""
   tabla = `<table class="tabla-fase-1">
@@ -38,6 +38,6 @@ export function generarTablaFase1(iteraciones: Array<Iteracion>) {
     tabla += `<td class="z">Z</td><td class="valor-z">${iteraciones[a].Z}</td></tr>`
   }
 
-  let tablaFase1 = <HTMLElement>document.getElementById('espacioTablaFase1');
+  let tablaFase1 = <HTMLElement>document.getElementById(div);
   tablaFase1.innerHTML = tabla;
 }

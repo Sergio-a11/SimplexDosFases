@@ -236,8 +236,10 @@ function generarValoresCj(numeroX: number, numeroH: number, numeroR: number, num
 
 function elegirColumnaPivote(signoZ: string, ZjCj: Array<number>, ecuaciones: Array<Fila>): Array<number> {
   let auxZjCj: Array<number> = [...ZjCj];
-  let ZjCjOrdenado = auxZjCj.sort();
+  let ZjCjOrdenado = auxZjCj.sort(function (a, b) { return a < b ? -1 : 1; });
   let index = 0;
+  //console.log(ZjCjOrdenado);
+
 
   if (signoZ === "min") {
     index = ZjCj.indexOf(ZjCjOrdenado[ZjCj.length - 1])
@@ -257,7 +259,7 @@ function elegirColumnaPivote(signoZ: string, ZjCj: Array<number>, ecuaciones: Ar
 
 function columnaPivoteIndice(signoZ: string, ZjCj: Array<number>, ecuaciones: Array<Fila>): number {
   let auxZjCj: Array<number> = [...ZjCj];
-  let ZjCjOrdenado = auxZjCj.sort();
+  let ZjCjOrdenado = auxZjCj.sort(function (a, b) { return a < b ? -1 : 1; });
   let index = 0;
 
   if (signoZ === "min") {
@@ -279,7 +281,7 @@ function elegirFilaPivote(resultadosBi: Array<number>, columnaPivote: Array<numb
   }
   let aux: Array<number> = [];
   aux.push(...arrValoresBiDivididoColumnaPivote);
-  aux.sort();
+  aux.sort(function (a, b) { return a < b ? -1 : 1; });
 
   let menorPositivo = aux.find(i => i >= 0) //menor positivo
 
@@ -298,7 +300,7 @@ function filaPivoteIndice(resultadosBi: Array<number>, columnaPivote: Array<numb
   }
   let aux: Array<number> = [];
   aux.push(...arrValoresBiDivididoColumnaPivote);
-  aux.sort();
+  aux.sort(function (a, b) { return a < b ? -1 : 1; });
 
   let menorPositivo = aux.find(i => i >= 0) //menor positivo
 
@@ -396,7 +398,7 @@ export function iterar(iteracion: Iteracion) {
       //cada columna
       for (let j = 0; j < iteracion.ecuaciones[0].valores.length; j++) {
         e.valores[j] = Number.parseFloat(((nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].valores[j] * ((iteracion.columnaPivote[i]) * -1)) + (iteracion.ecuaciones[i].valores[j])).toFixed(2));
-        console.log(e.valores[j]);
+        //console.log(e.valores[j]);
 
       }
       e.resultado = Number.parseFloat((((nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].resultado) * ((iteracion.columnaPivote[i] * -1))) + (iteracion.ecuaciones[i].resultado)).toFixed());
@@ -410,7 +412,7 @@ export function iterar(iteracion: Iteracion) {
 export function SolucionOptima(iteracioncita: Iteracion, signoZ: string): boolean {
   let SolucionOp = false
   const operation = signoZ; //pasar signoz
-  console.log(iteracioncita);
+  //console.log(iteracioncita);
 
   if (operation === "min") {
 
@@ -419,15 +421,6 @@ export function SolucionOptima(iteracioncita: Iteracion, signoZ: string): boolea
   else {
     SolucionOp = iteracioncita.ZjCj.every(i => i >= 0)
   }
-  return SolucionOp
+  return SolucionOp;
 }
 
-export function SolucionOptimaFase1(iteracioncita: Iteracion): boolean {
-  let SolucionNoOp = false;
-  iteracioncita.ecuaciones.forEach((e) => {
-    if (iteracioncita.Z !== 0 || e.artificial[0] !== 0) {
-      SolucionNoOp = true;
-    }
-  })
-  return !SolucionNoOp;
-}

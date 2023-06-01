@@ -71,6 +71,11 @@ export function leerMatrix(restrictionsLines: number, variablesRows: number): Ar
       signo: auxSingo,
       resultado: Number(inputAux.value)
     }
+    //validar ecuaion negativa
+    if (entradaAux.resultado < 0) {
+      entradaAux.valores.map(x => x * -1);
+      (entradaAux.signo === Signo.MenorQue) ? entradaAux.signo = Signo.MayorQue : entradaAux.signo = Signo.MenorQue
+    }
     //agregar ecuacion
     entrada.push(entradaAux);
   }
