@@ -11,7 +11,7 @@ export function generarTablaFase1(iteraciones: Array<Iteracion>) {
   iteraciones[0].valoresCj.forEach((cj) => {
     tabla += `<th class="valores-cj">${cj}</th>`
   })
-  tabla += `<th rowspan="2" class="xb" >xb</th><th rowspan="2">bi</th></tr><tr>`;
+  tabla += `<th rowspan="2" class="xb" >xb</th><th rowspan="2" class="bi">bi</th></tr><tr>`;
   tabla += `<th class="cx">CX</th>`
   iteraciones[0].variablesArtificialesTexto.forEach((e) => {
     tabla += `<td class="valores-cj">${e}</td>`
