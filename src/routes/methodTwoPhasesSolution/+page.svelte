@@ -3,7 +3,8 @@
 	import {
 		generarIteracion,
 		iterar,
-		SolucionOptima
+		SolucionOptima,
+		SolucionOptimaFase1
 	} from '../../services/obj_ecuacion';
 	import type { Iteracion } from '../../services/obj_ecuacion';
 
@@ -34,10 +35,28 @@
 
 	let iteracionesFase1: Array<Iteracion> = [];
 	iteracionesFase1.push(primeraIteracionFase1);
-	let iteracionActual = iterar(primeraIteracionFase1);
+	let iteracionActual = primeraIteracionFase1; //segunda iteracion medio vacia
 	console.log(iteracionesFase1);
-	let aux = 0;
-	do {
+
+	while (SolucionOptima(primeraIteracionFase1, signoZ) === false) {
+		iteracionActual = iterar(iteracionActual);
+		iteracionActual = generarIteracion(
+			iteracionActual.ecuaciones,
+			funcionZ.length,
+			numerosH,
+			numerosR,
+			numerosS,
+			signoZ
+		);
+		iteracionesFase1.push(iteracionActual);
+		console.log(iteracionActual);
+		if (SolucionOptima(iteracionActual, signoZ)) {
+			break;
+		}
+	}
+	console.log(iteracionesFase1);
+
+	/* do {
 		iteracionActual = generarIteracion(
 			iteracionActual.ecuaciones,
 			funcionZ.length,
@@ -50,9 +69,11 @@
 		console.log(iteracionActual);
 		iteracionActual = iterar(iteracionActual);
 		console.log(iteracionActual);
-		aux++;
-	} while (SolucionOptima(iteracionActual, signoZ) === false);
-	console.log(iteracionesFase1);
+	} while (
+		SolucionOptima(iteracionActual, signoZ) === false ||
+		SolucionOptimaFase1(iteracionActual)
+	);
+	console.log(iteracionesFase1); */
 
 	function GenerarFase1() {
 		generarTablaFase1(iteracionesFase1);

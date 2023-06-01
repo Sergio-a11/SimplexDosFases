@@ -184,7 +184,7 @@ export function generarIteracion(ecuaciones: Array<Fila>, numeroX: number, numer
     filaPivote,
     ZjCj: valoresZjCj,
     variablesArtificialesTexto: generarTextoVariablesArtificiales(numeroX, numeroH, numeroR, numeroS),
-    Z: 0
+    Z: obtenerZ(ecuaciones)
   };
 
   return iteracion;
@@ -323,6 +323,15 @@ function obtenerZjCj(matrizOperable: Array<Fila>, valoresCj: Array<number>) {
   return zjCj;
 }
 
+function obtenerZ(matrizOperable: Array<Fila>) {
+  let suma = 0;
+  //hasta numero de filas
+  for (let j = 0; j < matrizOperable.length; j++) {
+    suma += (matrizOperable[j].resultado * matrizOperable[j].artificial[0]);
+  }
+  return suma;
+}
+
 ////////////////////////////////////////////////////////////////
 //PASAR DE UNA ITERACION A OTRA
 
@@ -386,7 +395,7 @@ export function iterar(iteracion: Iteracion) {
     if (i !== iteracion.indexPivote[0]) {
       //cada columna
       for (let j = 0; j < iteracion.ecuaciones[0].valores.length; j++) {
-        e.valores[j] = (nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].valores[j] * ((iteracion.columnaPivote[i]) * -1)) + (iteracion.ecuaciones[i].valores[j]);
+        e.valores[j] = Number.parseFloat(((nuevaIteracion.ecuaciones[iteracion.indexPivote[0]].valores[j] * ((iteracion.columnaPivote[i]) * -1)) + (iteracion.ecuaciones[i].valores[j])).toFixed(2));
         console.log(e.valores[j]);
 
       }
@@ -401,14 +410,24 @@ export function iterar(iteracion: Iteracion) {
 export function SolucionOptima(iteracioncita: Iteracion, signoZ: string): boolean {
   let SolucionOp = false
   const operation = signoZ; //pasar signoz
+  console.log(iteracioncita);
 
-  if (operation == "min") {
+  if (operation === "min") {
 
     SolucionOp = iteracioncita.ZjCj.every(i => i <= 0)
   }
   else {
     SolucionOp = iteracioncita.ZjCj.every(i => i >= 0)
-
   }
   return SolucionOp
+}
+
+export function SolucionOptimaFase1(iteracioncita: Iteracion): boolean {
+  let SolucionNoOp = false;
+  iteracioncita.ecuaciones.forEach((e) => {
+    if (iteracioncita.Z !== 0 || e.artificial[0] !== 0) {
+      SolucionNoOp = true;
+    }
+  })
+  return !SolucionNoOp;
 }
